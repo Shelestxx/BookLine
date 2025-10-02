@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>BookLine</title>
+  <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+  <div class="container">
+            <!--Хедер-->
+    <header>
+      <div class="topbar">
+        <div class="logo">
+         <img src="../assets/Логотип.jpg" alt="Логотип BookLine" class="logo-img">
+         BookLine
+         </div>
+        <nav>
+          <a class="nav-link" href="#">Книги</a>
+          <a class="nav-link" href="#">Автори</a>
+          <a class="nav-link" href="#">Новинки</a>
+          <a class="nav-link" href="#">Контакти</a>
+        </nav>
+      </div>
+
+      <div class="search-row">
+        <div class="search" role="search">
+          <input id="searchInput" placeholder="Для пошуку книги використайте це поле" aria-label="search">
+          <select id="categorySelect">
+            <option value="">Усі категорії</option>
+            <option>Художня література</option>
+            <option>Нон-фікшн</option>
+            <option>Дитяча</option>
+          </select>
+        </div>
+        <button class="btn" id="searchBtn">Пошук</button>
+      </div>
+    </header>
+
+    <!-- Layout -->
+    <main class="layout">
+      <!-- Sidebar -->
+      <aside class="left-col">
+        <div class="sidebar">
+          <h4>Категорії</h4>
+          <div class="categories" id="categories">
+            <div class="cat" data-cat="all">Всі категорії</div>
+            <div class="cat" data-cat="novel">Художня література</div>
+            <div class="cat" data-cat="business">Бізнес</div>
+            <div class="cat" data-cat="kids">Дитяча література</div>
+            <div class="cat" data-cat="history">Історія</div>
+            <div class="cat" data-cat="science">Наука</div>
+          </div>
+        </div>
+      </aside>
+
+      <!-- полиця книг -->
+      <section class="right-col">
+        <div class="hero">
+          <div class="text">
+            <h1>Ласкаво просимо в BookLine</h1>
+            <p>Знайдіть свою наступну улюблену книжку</p>
+          </div>
+        </div>
+
+        <div class="grid" id="productGrid">
+          <article class="card">
+              <img src="../assets/Гравити фолз дневник 3.jpg" alt="Гравіті фолз щоденник 3" class="thumb">
+                <div class="info">
+                <h3 class="title">Гравіті фолз щоденник 3</h3>
+                <div class="author">Автор...</div>
+                <div class="price-row">
+              <div class="price">350 грн</div>
+          <button class="buy">Купити</button>
+        </div>
+        </div>
+    </article>
+
+          <article class="card">
+            <img src="../assets/Гравити фолз дневник 2.webp" alt="Гравіті фолз щоденник 2" class="thumb">
+            <div class="info">
+              <h3 class="title">Гравіті фолз щоденник 2</h3>
+              <div class="author">Автор...</div>
+              <div class="price-row">
+                <div class="price">420 грн</div>
+                <button class="buy">Купити</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <!-- контакт інфа і вся параша -->
+     <footer>
+        © 2025 BookLine — всі права захищені <br>
+        <p>Телефон: +380931183812</p>
+        <p>Email: yuriyovich.denys@lll.kpi.ua</p>
+    </footer>
+  </div>
+
+</body>
+</html>
