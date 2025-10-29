@@ -296,3 +296,63 @@ footer {
   .search-row { flex-direction: column; }
   .search, .btn { width: 100%; }
 }
+/* ===========================
+   Кнопки входу / реєстрації
+   =========================== */
+.auth-buttons {
+  display: flex;
+  gap: 10px;
+  margin-left: 20px;
+}
+
+.btn-login,
+.btn-register {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+  background: transparent;
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.btn-login:hover,
+.btn-register:hover {
+  background: var(--accent);
+  color: #fff;
+}
+
+/* Адаптивність — кнопки під меню */
+@media (max-width: 600px) {
+  .auth-buttons {
+    flex-direction: column;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .btn-login,
+  .btn-register {
+    width: 100%;
+  }
+}
+/* ===========================
+   Кнопка профілю
+   =========================== */
+.btn-profile {
+  background: transparent;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 8px 14px;
+  border-radius: 10px;
+  font-weight: 700;
+  margin-left: 8px;
+  text-decoration: none;
+  transition: 0.2s;
+}
+
+.btn-profile:hover {
+  background: var(--accent);
+  color: #fff;
+}
