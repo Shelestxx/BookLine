@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Мій профіль — BookLine</title>
+  
+  <link rel="stylesheet" href="/css/profile.css">
+</head>
+
+<body>
+  <div class="profile-container">
+    <div class="profile-box">
+      <h2 id="usernameDisplay">Вітаємо, Користувач!</h2>
+      <p id="emailDisplay">Завантаження даних...</p>
+
+      <div class="actions">
+        <a href="index.html" class="btn">На головну</a>
+        <button id="logoutBtn" class="btn logout" style="cursor: pointer;">Вийти</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // === ЛОГІКА ПРОФІЛЮ ===
+
+    // 1. Перевірка: чи увійшов користувач?
+    const token = localStorage.getItem('token');
+    if (!token) {
+        // Якщо токена немає — кидаємо на вхід
+        window.location.href = 'login.html';
+    }
+
+    // 2. Показати роль користувача (якщо збережена)
+    const role = localStorage.getItem('userRole');
+    if(role) {
+        document.getElementById('emailDisplay').innerText = `Ваш статус: ${role}`;
+    }
+
+    // 3. Логіка кнопки "Вийти"
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        // Очищаємо пам'ять (видаляємо токен)
+        localStorage.removeItem('token');
+        localStorage.removeItem('userRole');
+        
+        alert("Ви вийшли з акаунту");
+        window.location.href = 'login.html';
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+/* public/css/admin.css */
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    padding: 20px;
+    background-color: #f4f6f9;
+    margin: 0;
+}
+
+.admin-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+h1 {
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.nav-link {
+    text-decoration: none;
+    color: #0b6cf6;
+    font-weight: bold;
+    display: inline-block;
+    margin-bottom: 20px;
+}
+
+/* --- ФОРМА --- */
+.add-book-form {
+    background: #f8f9fa;
+    padding: 25px;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    border: 1px solid #e9ecef;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #555;
+}
+
+input {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+input:focus {
+    border-color: #0b6cf6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(11, 108, 246, 0.1);
+}
+
+/* --- ТАБЛИЦЯ --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+
+th, td {
+    border: 1px solid #dee2e6;
+    padding: 12px 15px;
+    text-align: left;
+}
+
+th {
+    background-color: #0b6cf6;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f8f9fa;
+}
+
+tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* --- КНОПКИ --- */
+button {
+    cursor: pointer;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: 0.2s;
+    font-size: 14px;
+}
+
+/* Головна кнопка форми */
+.btn-submit {
+    background-color: #0b6cf6;
+    color: white;
+    padding: 12px 24px;
+    font-size: 16px;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-submit:hover {
+    background-color: #095ad4;
+}
+
+/* Кнопка видалення (червона) */
+.btn-delete {
+    background-color: #ff4d4d;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #cc0000;
+}
+
+/* Кнопка редагування (жовта) */
+.btn-edit {
+    background-color: #ffc107;
+    color: #333;
+    margin-right: 5px;
+}
+
+.btn-edit:hover {
+    background-color: #e0a800;
+}
+
+/* Кнопка скасування (сіра) */
+.btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    display: none; /* Схована, поки не почнемо редагувати */
+}
+
+.btn-cancel:hover {
+    background-color: #5a6268;
+}

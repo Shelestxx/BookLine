@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Увійти | BookLine</title>
+ <link rel="stylesheet" href="/css/login.css">
+</head>
+<body>
+  <div class="auth-container">
+    <div class="auth-box">
+      <h2>Вхід до BookLine</h2>
+
+      <form id="loginForm">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="Введіть свій email" required>
+
+        <label for="password">Пароль</label>
+        <input type="password" id="password" placeholder="Введіть пароль" required>
+
+        <button type="submit" class="btn">Увійти</button>
+      </form>
+
+      <p class="switch">
+        Не маєте акаунта?
+        <a href="register.html">Зареєструватися</a>
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('loginForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        const res = await fetch('/api/auth/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+
+        const data = await res.json();
+
+        if (res.ok) {
+          // === НАЙВАЖЛИВІШЕ: ЗБЕРІГАЄМО ТОКЕН ===
+          localStorage.setItem('token', data.token);
+          localStorage.setItem('userRole', data.user.role); // Зберігаємо роль, щоб знати, чи пускати в адмінку
+          
+          alert("Вхід успішний!");
+
+          // Якщо це адмін — в адмінку, якщо ні — на головну
+          if (data.user.role === 'Admin') {
+            window.location.href = 'admin.html';
+          } else {
+            window.location.href = 'index.html';
+          }
+        } else {
+          alert("Помилка входу: " + (data.message || "Невірні дані"));
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Помилка з'єднання з сервером");
+      }
+    });
+  </script>
+</body>
+</html>

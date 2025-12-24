@@ -106,6 +106,32 @@
         <p>Email: yuriyovich.denys@lll.kpi.ua</p>
     </footer>
   </div>
+<script>
+  async function loadBooks() {
+    const response = await fetch('http://localhost:3000/api/books');
+    const books = await response.json();
+    const grid = document.getElementById('productGrid');
+    
+    grid.innerHTML = ''; // Очищуємо статичні дані
+    
+    books.forEach(book => {
+      grid.innerHTML += `
+        <article class="card">
+          <img src="${book.image_url}" alt="${book.title}" class="thumb">
+          <div class="info">
+            <h3 class="title">${book.title}</h3>
+            <div class="author">${book.author}</div>
+            <div class="price-row">
+              <div class="price">${book.price} грн</div>
+              <button class="buy">Купити</button>
+            </div>
+          </div>
+        </article>
+      `;
+    });
+  }
 
+  window.onload = loadBooks;
+</script>
 </body>
 </html>

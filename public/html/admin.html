@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Адмін-панель</title>
+  <link rel="stylesheet" href="/css/admin.css">
+</head>
+<body>
+
+  <div class="admin-container">
+    <a href="/html/index.html" class="nav-link">← На головну сайту</a>
+    <h1>Керування книгами</h1>
+
+    <div class="add-book-form">
+      <div class="form-header">
+        <h2 id="formTitle">Додати нову книгу</h2>
+        <button type="button" id="cancelEdit" class="btn-cancel" onclick="resetForm()">Скасувати редагування</button>
+      </div>
+      
+      <form id="bookForm">
+        <input type="hidden" id="book_id">
+
+        <div class="form-group">
+          <label>Назва книги:</label>
+          <input type="text" id="title" required placeholder="Наприклад: Кобзар">
+        </div>
+        <div class="form-group">
+          <label>Ціна (грн):</label>
+          <input type="number" id="price" required placeholder="350">
+        </div>
+        <div class="form-group">
+          <label>Кількість на складі:</label>
+          <input type="number" id="quantity" required placeholder="10">
+        </div>
+        <div class="form-group">
+          <label>ID Автора (число з бази):</label>
+          <input type="number" id="author_id" required placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>ID Жанру (число з бази):</label>
+          <input type="number" id="genre_id" required placeholder="1">
+        </div>
+        <div class="form-group">
+          <label>Картинка (шлях):</label>
+          <input type="text" id="image_url" value="/assets/Logotype.jpg">
+        </div>
+        
+        <button type="submit" class="btn-submit" id="submitBtn">Додати товар</button>
+      </form>
+    </div>
+
+    <h2>Список книг у базі</h2>
+    <table id="booksTable">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Назва</th>
+          <th>Автор</th>
+          <th>Ціна</th>
+          <th>Дія</th>
+        </tr>
+      </thead>
+      <tbody>
+        </tbody>
+    </table>
+  </div>
+
+<script>
+    let isEditing = false; // Змінна-прапорець: чи редагуємо ми зараз?
+
+    // 1. Завантаження книг (GET)
+    async function loadAdminBooks() {
+      try {
+        const response = await fetch('/api/books', { cache: "no-store" });
+        const books = await response.json();
+        
+        const tbody = document.querySelector('#booksTable tbody');
+        tbody.innerHTML = '';
+
+books.forEach(book => {
+          // МИ ВИПРАВЛЯЄМО book.id НА book.book_id
+          tbody.innerHTML += `
+            <tr>
+              <td>${book.book_id}</td>  <td>${book.title}</td>
+              <td>${book.author || 'ID: ' + book.author_id}</td>
+              <td>${book.price} грн</td>
+              <td>
+                <button class="btn-edit" onclick="startEdit(${book.book_id})">Редагувати</button>
+                <button class="btn-delete" onclick="deleteBook(${book.book_id})">Видалити</button> </td>
+            </tr>
+          `;
+        });
+      } catch (error) {
+        console.error('Помилка завантаження:', error);
+      }
+    }
+
+    // 2. Обробка форми (Додавання АБО Редагування)
+    document.getElementById('bookForm').addEventListener('submit', async (e) => {
+      e.preventDefault(); 
+
+      const bookData = {
+        title: document.getElementById('title').value,
+        price: document.getElementById('price').value,
+        quantity: document.getElementById('quantity').value,
+        author_id: document.getElementById('author_id').value,
+        genre_id: document.getElementById('genre_id').value,
+        image_url: document.getElementById('image_url').value
+      };
+
+      try {
+        let url = '/api/books';
+        let method = 'POST';
+
+        // Якщо ми в режимі редагування -> змінюємо логіку на PUT
+        if (isEditing) {
+            const id = document.getElementById('book_id').value;
+            url = `/api/books/${id}`;
+            method = 'PUT'; 
+        }
+
+        const res = await fetch(url, {
+            method: method,
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(bookData)
+        });
+
+        const result = await res.json();
+
+        if (res.ok) {
+            alert(isEditing ? 'Книгу оновлено!' : 'Книгу додано!');
+            resetForm(); // Очистити форму
+            loadAdminBooks(); // Оновити таблицю
+        } else {
+            alert('Помилка: ' + (result.message || result.error));
+        }
+      } catch (error) {
+          console.error(error);
+          alert('Помилка з’єднання');
+      }
+    });
+
+    // 3. Почати редагування (завантажити дані у форму)
+    async function startEdit(id) {
+        try {
+            // Отримуємо дані про книгу з сервера
+            const res = await fetch(`/api/books/${id}`);
+            
+            if(!res.ok) {
+                alert("Помилка отримання даних книги");
+                return;
+            }
+            
+            const book = await res.json();
+
+            // Заповнюємо поля
+            document.getElementById('book_id').value = book.book_id;
+            document.getElementById('title').value = book.title;
+            document.getElementById('price').value = book.price;
+            document.getElementById('quantity').value = book.quantity;
+            document.getElementById('author_id').value = book.author_id;
+            document.getElementById('genre_id').value = book.genre_id;
+            document.getElementById('image_url').value = book.image_url;
+
+            // Змінюємо вигляд форми
+            isEditing = true;
+            document.getElementById('formTitle').innerText = 'Редагувати книгу (ID: ' + id + ')';
+            const btn = document.getElementById('submitBtn');
+            btn.innerText = 'Зберегти зміни';
+            btn.style.backgroundColor = '#ffc107'; // Жовтий колір
+            btn.style.color = '#333';
+            
+            // Показуємо кнопку "Скасувати"
+            document.getElementById('cancelEdit').style.display = 'block';
+
+            // Прокрутка вгору
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        } catch (error) {
+            console.error(error);
+            alert("Не вдалося завантажити книгу");
+        }
+    }
+
+    // 4. Скинути форму / Скасувати редагування
+    function resetForm() {
+        document.getElementById('bookForm').reset();
+        isEditing = false;
+        document.getElementById('book_id').value = '';
+        
+        // Повертаємо все як було
+        document.getElementById('formTitle').innerText = 'Додати нову книгу';
+        const btn = document.getElementById('submitBtn');
+        btn.innerText = 'Додати товар';
+        btn.style.backgroundColor = '#0b6cf6'; // Синій колір
+        btn.style.color = '#fff';
+        
+        document.getElementById('cancelEdit').style.display = 'none';
+    }
+
+    // 5. Видалення
+    async function deleteBook(id) {
+      if(!confirm('Ви точно хочете видалити книгу з ID ' + id + '?')) return;
+
+      try {
+        const res = await fetch(`/api/books/${id}`, { method: 'DELETE' });
+        const result = await res.json();
+
+        if (res.ok) {
+            loadAdminBooks();
+        } else {
+            alert('Помилка видалення: ' + (result.message || result.error));
+        }
+      } catch (error) {
+        console.error(error);
+        alert('Помилка мережі');
+      }
+    }
+
+    // Запускаємо при відкритті сторінки
+    loadAdminBooks();
+</script>
+</body>
+</html>
